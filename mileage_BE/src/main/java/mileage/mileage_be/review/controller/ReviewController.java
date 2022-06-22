@@ -5,6 +5,7 @@ import mileage.mileage_be.advice.exceptions.NotExistActionException;
 import mileage.mileage_be.advice.exceptions.ReviewAlreadyExistException;
 import mileage.mileage_be.advice.exceptions.UserNotFoundException;
 import mileage.mileage_be.review.domain.Event;
+import mileage.mileage_be.review.domain.Review;
 import mileage.mileage_be.review.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/events")
 public class ReviewController {
-    Map<String, String> result = new HashMap();
 
     private final ReviewService reviewService;
 
@@ -35,12 +35,16 @@ public class ReviewController {
                 } else {
                     throw new ReviewAlreadyExistException();
                 }
-
-
             }
             case MOD: {
                 //수정
-                return new ResponseEntity("성공적으로 수정되었습니다.", HttpStatus.OK);
+                if (reviewService.findReview(event.getReviewId()).isEmpty()) {
+                    throw new ReviewAlreadyExistException();
+                } else {
+                    reviewService.modifyReview(event,event.getReviewId());
+                    return new ResponseEntity("성공적으로 수정되었습니다.", HttpStatus.OK);
+                }
+
 
             }
             case DELETE: {
@@ -55,6 +59,8 @@ public class ReviewController {
         }
 
     }
+
+    private Map<String, String> result = new HashMap();
 
     @GetMapping
     public ResponseEntity<Map<String, String>> noGET() {

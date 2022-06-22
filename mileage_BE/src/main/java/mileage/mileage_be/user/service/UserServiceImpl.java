@@ -1,6 +1,5 @@
 package mileage.mileage_be.user.service;
 
-import mileage.mileage_be.advice.exceptions.UserNotFoundException;
 import mileage.mileage_be.user.domain.User;
 import mileage.mileage_be.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -28,13 +27,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User incPoint(String userId){
+    public User incPoint(String userId) {
         Optional<User> user = findOne(userId);
         return userRepository.pointUp(user.get());
     }
 
     @Override
-    public User decPoint(String userId){
+    public User decPoint(String userId) {
         Optional<User> user = findOne(userId);
         return userRepository.pointDown(user.get());
     }

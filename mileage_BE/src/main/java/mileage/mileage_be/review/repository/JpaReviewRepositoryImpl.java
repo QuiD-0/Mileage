@@ -1,6 +1,7 @@
 package mileage.mileage_be.review.repository;
 
 import mileage.mileage_be.review.domain.Photo;
+import mileage.mileage_be.review.domain.Place;
 import mileage.mileage_be.review.domain.Review;
 import org.springframework.stereotype.Repository;
 
@@ -50,5 +51,22 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     @Override
     public void savePhoto(Photo photo) {
         em.persist(photo);
+    }
+
+    @Override
+    public void savePlace(Place place) {
+        em.persist(place);
+    }
+
+    @Override
+    public Optional<Place> findPlaceByPlaceId(String placeId) {
+        Place place = em.find(Place.class,placeId);
+        return Optional.ofNullable(place);
+    }
+
+
+    @Override
+    public List<Review> findAllReviewByPlaceId(String placeId) {
+        return em.createQuery("select r from Place p join Review r where p.placeId=:placeId and p.placeId = r.placeId order by r.createdAt",Review.class).getResultList();
     }
 }
