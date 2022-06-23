@@ -32,4 +32,7 @@ public interface ReviewRepository {
 
     Photo findPhotoByPhotoId(String photoId);
 
+    void deletePlace(Place place);
+
+    void removeAllPhotoByReviewId(String reviewId);
 }

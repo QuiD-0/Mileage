@@ -33,8 +33,10 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public boolean delete(String reviewID) {
-        return false;
+    public boolean delete(String reviewId) {
+        Review review = em.find(Review.class,reviewId);
+        em.remove(review);
+        return true;
     }
 
     @Override
@@ -90,6 +92,16 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     @Override
     public Photo findPhotoByPhotoId(String photoId) {
         return em.find(Photo.class, photoId);
+    }
+
+    @Override
+    public void deletePlace(Place place) {
+        em.remove(place);
+    }
+
+    @Override
+    public void removeAllPhotoByReviewId(String reviewId) {
+        em.createQuery("delete from Photo p where p.review.reviewId=:reviewId").setParameter("reviewId", reviewId).executeUpdate();
     }
 
 }

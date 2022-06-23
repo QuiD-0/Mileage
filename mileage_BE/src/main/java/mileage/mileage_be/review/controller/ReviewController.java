@@ -36,7 +36,7 @@ public class ReviewController {
             case MOD: {
                 //수정
                 if (reviewService.findReview(event.getReviewId()).isEmpty()) {
-                    throw new ReviewAlreadyExistException();
+                    throw new ReviewNotExistException();
                 } else {
                     reviewService.modifyReview(event,event.getReviewId());
                     return new ResponseEntity("성공적으로 수정되었습니다.", HttpStatus.OK);
@@ -46,7 +46,13 @@ public class ReviewController {
             }
             case DELETE: {
                 //삭제
-                return new ResponseEntity("성공적으로 삭제되었습니다.", HttpStatus.OK);
+                if (reviewService.findReview(event.getReviewId()).isEmpty()) {
+                    throw new ReviewNotExistException();
+                } else {
+                    reviewService.deleteReview(event.getReviewId());
+                    return new ResponseEntity("성공적으로 삭제되었습니다.", HttpStatus.OK);
+                }
+
 
             }
             default: {

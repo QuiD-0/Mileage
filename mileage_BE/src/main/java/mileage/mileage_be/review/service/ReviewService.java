@@ -15,11 +15,9 @@ public interface ReviewService {
 
     Review modifyReview(Event event, String id) throws ReviewNotExistException, ContentNotExistException, UserNotFoundException, NotExistActionException;
 
-    boolean deleteReview(String reviewID);
+    boolean deleteReview(String reviewID) throws ReviewNotExistException, UserNotFoundException, NotExistActionException;
 
     Optional<Review> findReview(String reviewId);
-
-    List<Review> FindOnesReviews(String userId);
 
 
 }
