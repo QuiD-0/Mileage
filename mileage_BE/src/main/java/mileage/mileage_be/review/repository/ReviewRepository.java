@@ -16,7 +16,6 @@ public interface ReviewRepository {
 
     Optional<Review> findReviewById(String reviewId);
 
-    List<Review> FindAllReviewByUserId(String userId);
 
     void savePhoto(Photo photo);
 
@@ -24,7 +23,6 @@ public interface ReviewRepository {
 
     Optional<Place> findPlaceByPlaceId(String placeId);
 
-    List<Review> findAllReviewByPlaceId(String placeId);
 
     void removePhoto(String photoId);
 
@@ -35,4 +33,6 @@ public interface ReviewRepository {
     void deletePlace(Place place);
 
     void removeAllPhotoByReviewId(String reviewId);
+
+    List<String> findAllReviewedPlaceByUserId(String userId);
 }

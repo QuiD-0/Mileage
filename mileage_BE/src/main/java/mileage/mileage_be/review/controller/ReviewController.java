@@ -1,8 +1,9 @@
 package mileage.mileage_be.review.controller;
 
-import mileage.mileage_be.advice.exceptions.*;
+import mileage.mileage_be.advice.exceptions.NotExistActionException;
+import mileage.mileage_be.advice.exceptions.ReviewAlreadyExistException;
+import mileage.mileage_be.advice.exceptions.ReviewNotExistException;
 import mileage.mileage_be.review.domain.Event;
-import mileage.mileage_be.review.domain.Review;
 import mileage.mileage_be.review.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +39,7 @@ public class ReviewController {
                 if (reviewService.findReview(event.getReviewId()).isEmpty()) {
                     throw new ReviewNotExistException();
                 } else {
-                    reviewService.modifyReview(event,event.getReviewId());
+                    reviewService.modifyReview(event, event.getReviewId());
                     return new ResponseEntity("성공적으로 수정되었습니다.", HttpStatus.OK);
                 }
 

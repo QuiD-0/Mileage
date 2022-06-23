@@ -18,6 +18,7 @@ import javax.persistence.*;
 @ToString
 @Table(indexes = @Index(columnList = "attachedPhotoIDs"))
 public class Photo {
+
     @Id
     private String attachedPhotoIDs;
     @ManyToOne

@@ -34,7 +34,7 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
 
     @Override
     public boolean delete(String reviewId) {
-        Review review = em.find(Review.class,reviewId);
+        Review review = em.find(Review.class, reviewId);
         em.remove(review);
         return true;
     }
@@ -43,11 +43,6 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     public Optional<Review> findReviewById(String reviewId) {
         Review review = em.find(Review.class, reviewId);
         return Optional.ofNullable(review);
-    }
-
-    @Override
-    public List<Review> FindAllReviewByUserId(String userId) {
-        return null;
     }
 
     @Override
@@ -64,12 +59,6 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     public Optional<Place> findPlaceByPlaceId(String placeId) {
         Place place = em.find(Place.class, placeId);
         return Optional.ofNullable(place);
-    }
-
-
-    @Override
-    public List<Review> findAllReviewByPlaceId(String placeId) {
-        return em.createQuery("select r from Place p join Review r where p.placeId=:placeId and p.placeId = r.placeId order by r.createdAt", Review.class).getResultList();
     }
 
     @Override
@@ -102,6 +91,11 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     @Override
     public void removeAllPhotoByReviewId(String reviewId) {
         em.createQuery("delete from Photo p where p.review.reviewId=:reviewId").setParameter("reviewId", reviewId).executeUpdate();
+    }
+
+    @Override
+    public List<String> findAllReviewedPlaceByUserId(String userId) {
+        return em.createQuery("select r.placeId from Review r where r.userId=:userId").setParameter("userId",userId).getResultList();
     }
 
 }

@@ -1,10 +1,7 @@
 package mileage.mileage_be.review.service;
 
 import lombok.RequiredArgsConstructor;
-import mileage.mileage_be.advice.exceptions.ContentNotExistException;
-import mileage.mileage_be.advice.exceptions.NotExistActionException;
-import mileage.mileage_be.advice.exceptions.ReviewNotExistException;
-import mileage.mileage_be.advice.exceptions.UserNotFoundException;
+import mileage.mileage_be.advice.exceptions.*;
 import mileage.mileage_be.review.domain.Event;
 import mileage.mileage_be.review.domain.Photo;
 import mileage.mileage_be.review.domain.Place;
@@ -29,12 +26,15 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     @Transactional
-    public Review addReview(Event event) throws NotExistActionException, ContentNotExistException, UserNotFoundException {
+    public Review addReview(Event event) throws NotExistActionException, ContentNotExistException, UserNotFoundException, AlreadyReviewedPlaceException {
         //사용자 존재 확인
         Optional<User> user = userService.findOne(event.getUserId());
         if (user.isEmpty()) {
             user = Optional.ofNullable(userService.join(new User(event.getUserId(), 0)));
         }
+        //해당 지역에 리뷰남긴 기록 확인
+        List<String> reviewedPlace = reviewRepository.findAllReviewedPlaceByUserId(user.get().getUserId());
+        if(reviewedPlace.contains(event.getPlaceId()))throw new AlreadyReviewedPlaceException();
         //사진 저장
         Review review = new Review(event.getReviewId(), event.getContent(), event.getUserId(), event.getPlaceId(), null, null);
         for (String photoID : event.getAttachedPhotoIds()) {
@@ -113,19 +113,19 @@ public class ReviewServiceImpl implements ReviewService {
     public boolean deleteReview(String reviewId) throws ReviewNotExistException, UserNotFoundException, NotExistActionException {
         //기존 정보 불러오기
         Optional<Review> review = reviewRepository.findReviewById(reviewId);
-        if(review.isEmpty()) throw new ReviewNotExistException();
+        if (review.isEmpty()) throw new ReviewNotExistException();
         Optional<User> user = userService.findOne(review.get().getUserId());
-        if(user.isEmpty()) throw new UserNotFoundException();
+        if (user.isEmpty()) throw new UserNotFoundException();
         Optional<Place> place = reviewRepository.findPlaceByPlaceId(review.get().getPlaceId());
 
         //포인트 차감 및 데이터 삭제
         List<String> photoIds = reviewRepository.findAllPhotoIdsByReviewId(review.get().getReviewId());
-        if(photoIds.size()>0){
+        if (photoIds.size() > 0) {
             reviewRepository.removeAllPhotoByReviewId(reviewId);
             userService.decPoint(user.get().getUserId());
         }
         //사용자가 해당 지역에 최초 등록한 리뷰였을경우
-        if(!place.isEmpty() && place.get().getUser().getUserId().equals(user.get().getUserId()) &&place.get().getReview().getReviewId().equals(reviewId)){
+        if (!place.isEmpty() && place.get().getUser().getUserId().equals(user.get().getUserId()) && place.get().getReview().getReviewId().equals(reviewId)) {
             reviewRepository.deletePlace(place.get());
             userService.decPoint(user.get().getUserId());
         }

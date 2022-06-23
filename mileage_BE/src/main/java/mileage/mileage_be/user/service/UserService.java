@@ -8,8 +8,11 @@ import java.util.Optional;
 
 public interface UserService {
     User join(User user);
+
     Optional<User> findOne(String userId) throws NotExistActionException, UserNotFoundException;
+
     User incPoint(String userId) throws NotExistActionException, UserNotFoundException;
+
     User decPoint(String userId) throws NotExistActionException, UserNotFoundException;
 
 }
