@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import mileage.mileage_be.user.domain.User;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
@@ -14,13 +16,16 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
+@Table(indexes = @Index(columnList = "attachedPhotoIDs"))
 public class Photo {
     @Id
     private String attachedPhotoIDs;
     @ManyToOne
-    @JoinColumn(name = "reviewId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "review")
     private Review review;
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "user")
     private User user;
 }

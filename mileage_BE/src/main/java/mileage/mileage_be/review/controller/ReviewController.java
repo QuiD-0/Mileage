@@ -1,9 +1,6 @@
 package mileage.mileage_be.review.controller;
 
-import mileage.mileage_be.advice.exceptions.ContentNotExistException;
-import mileage.mileage_be.advice.exceptions.NotExistActionException;
-import mileage.mileage_be.advice.exceptions.ReviewAlreadyExistException;
-import mileage.mileage_be.advice.exceptions.UserNotFoundException;
+import mileage.mileage_be.advice.exceptions.*;
 import mileage.mileage_be.review.domain.Event;
 import mileage.mileage_be.review.domain.Review;
 import mileage.mileage_be.review.service.ReviewService;
@@ -25,7 +22,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    public ResponseEntity<String> review(@RequestBody Event event) throws NotExistActionException, ReviewAlreadyExistException, ContentNotExistException, UserNotFoundException {
+    public ResponseEntity<String> review(@RequestBody Event event) throws Exception {
         switch (event.getAction()) {
             case ADD: {
                 //추가

@@ -1,5 +1,6 @@
 package mileage.mileage_be.user.service;
 
+import lombok.RequiredArgsConstructor;
 import mileage.mileage_be.user.domain.User;
 import mileage.mileage_be.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -7,11 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     private final UserRepository userRepository;
 

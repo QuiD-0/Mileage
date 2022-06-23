@@ -5,6 +5,8 @@ import org.hibernate.annotations.DynamicUpdate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Table;
 
 @Entity
 @Getter
@@ -12,6 +14,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @ToString
 @DynamicUpdate
+@Table(indexes = @Index(columnList = "userId"))
 public class User {
     @Id
     private String userId;

@@ -1,5 +1,6 @@
 package mileage.mileage_be.user.repository;
 
+import lombok.RequiredArgsConstructor;
 import mileage.mileage_be.user.domain.User;
 import org.springframework.stereotype.Repository;
 
@@ -7,12 +8,9 @@ import javax.persistence.EntityManager;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class JpaUserRepositoryImpl implements UserRepository {
     private final EntityManager em;
-
-    public JpaUserRepositoryImpl(EntityManager em) {
-        this.em = em;
-    }
 
     @Override
     public User save(User user) {

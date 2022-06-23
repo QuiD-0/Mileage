@@ -1,6 +1,5 @@
 package mileage.mileage_be.review.repository;
 
-import mileage.mileage_be.review.domain.Event;
 import mileage.mileage_be.review.domain.Photo;
 import mileage.mileage_be.review.domain.Place;
 import mileage.mileage_be.review.domain.Review;
@@ -26,4 +25,11 @@ public interface ReviewRepository {
     Optional<Place> findPlaceByPlaceId(String placeId);
 
     List<Review> findAllReviewByPlaceId(String placeId);
+
+    void removePhoto(String photoId);
+
+    List<String> findAllPhotoIdsByReviewId(String reviewId);
+
+    Photo findPhotoByPhotoId(String photoId);
+
 }
