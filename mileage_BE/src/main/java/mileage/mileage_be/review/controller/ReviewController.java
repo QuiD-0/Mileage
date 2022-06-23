@@ -53,8 +53,6 @@ public class ReviewController {
                     reviewService.deleteReview(event.getReviewId());
                     return new ResponseEntity("성공적으로 삭제되었습니다.", HttpStatus.OK);
                 }
-
-
             }
             default: {
                 throw new NotExistActionException();

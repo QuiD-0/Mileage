@@ -46,19 +46,29 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public void savePhoto(Photo photo) {
-        em.persist(photo);
+    public void savePlace(Place place) {
+        em.persist(place);
     }
 
     @Override
-    public void savePlace(Place place) {
-        em.persist(place);
+    public void deletePlace(Place place) {
+        em.remove(place);
     }
 
     @Override
     public Optional<Place> findPlaceByPlaceId(String placeId) {
         Place place = em.find(Place.class, placeId);
         return Optional.ofNullable(place);
+    }
+
+    @Override
+    public Long findAllReviewedPlaceByUserId(String userId, String placeId) {
+        return (Long) em.createQuery("select count(r) from Review r where r.userId=:userId and r.placeId=:placeId").setParameter("userId", userId).setParameter("placeId", placeId).getSingleResult();
+    }
+
+    @Override
+    public void savePhoto(Photo photo) {
+        em.persist(photo);
     }
 
     @Override
@@ -70,32 +80,23 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     @Override
     public List<String> findAllPhotoIdsByReviewId(String reviewId) {
         Optional<Review> review = findReviewById(reviewId);
-        List<Photo> photos = em.createQuery("select p from Photo p where p.review = :review ", Photo.class).setParameter("review", review.get()).getResultList();
+        List<Photo> photos = em.createQuery("select p from Photo p where p.photoEmbededId.review = :review ", Photo.class).setParameter("review", review.get()).getResultList();
         List<String> photoIds = new ArrayList<>();
         for (Photo photo : photos) {
-            photoIds.add((photo.getAttachedPhotoIDs()));
+            photoIds.add((photo.getPhotoEmbededId().getAttachedPhotoIDs()));
         }
         return photoIds;
     }
 
     @Override
     public Photo findPhotoByPhotoId(String photoId) {
-        return em.find(Photo.class, photoId);
+        return (Photo) em.createQuery("select p from Photo p where p.photoEmbededId.attachedPhotoIDs=:photoId").setParameter("photoId", photoId).getSingleResult();
     }
 
-    @Override
-    public void deletePlace(Place place) {
-        em.remove(place);
-    }
 
     @Override
     public void removeAllPhotoByReviewId(String reviewId) {
-        em.createQuery("delete from Photo p where p.review.reviewId=:reviewId").setParameter("reviewId", reviewId).executeUpdate();
-    }
-
-    @Override
-    public List<String> findAllReviewedPlaceByUserId(String userId) {
-        return em.createQuery("select r.placeId from Review r where r.userId=:userId").setParameter("userId",userId).getResultList();
+        em.createQuery("delete from Photo p where p.photoEmbededId.review.reviewId=:reviewId").setParameter("reviewId", reviewId).executeUpdate();
     }
 
 }

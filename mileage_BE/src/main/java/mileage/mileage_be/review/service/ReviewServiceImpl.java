@@ -2,10 +2,7 @@ package mileage.mileage_be.review.service;
 
 import lombok.RequiredArgsConstructor;
 import mileage.mileage_be.advice.exceptions.*;
-import mileage.mileage_be.review.domain.Event;
-import mileage.mileage_be.review.domain.Photo;
-import mileage.mileage_be.review.domain.Place;
-import mileage.mileage_be.review.domain.Review;
+import mileage.mileage_be.review.domain.*;
 import mileage.mileage_be.review.repository.ReviewRepository;
 import mileage.mileage_be.user.domain.User;
 import mileage.mileage_be.user.service.UserService;
@@ -33,12 +30,14 @@ public class ReviewServiceImpl implements ReviewService {
             user = Optional.ofNullable(userService.join(new User(event.getUserId(), 0)));
         }
         //해당 지역에 리뷰남긴 기록 확인
-        List<String> reviewedPlace = reviewRepository.findAllReviewedPlaceByUserId(user.get().getUserId());
-        if(reviewedPlace.contains(event.getPlaceId()))throw new AlreadyReviewedPlaceException();
-        //사진 저장
+        Long isReviewedPlace = reviewRepository.findAllReviewedPlaceByUserId(user.get().getUserId(),event.getPlaceId());
+        if(isReviewedPlace!=0)throw new AlreadyReviewedPlaceException();
+        //리뷰 저장
         Review review = new Review(event.getReviewId(), event.getContent(), event.getUserId(), event.getPlaceId(), null, null);
+        review = reviewRepository.save(review);
+        //사진 저장
         for (String photoID : event.getAttachedPhotoIds()) {
-            reviewRepository.savePhoto(new Photo(photoID, review, user.get()));
+            reviewRepository.savePhoto(new Photo(new PhotoEmbededId(photoID, review, user.get())));
         }
         //컨텐츠가 있을경우 포인트 지급
         if (event.getContent().length() > 0) {
@@ -57,7 +56,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
 
-        return reviewRepository.save(review);
+        return review;
     }
 
     @Override
@@ -91,7 +90,7 @@ public class ReviewServiceImpl implements ReviewService {
             //수정후 추가된 사진 추가
             for (String photoId : modPhotoIds) {
                 if (!originPhotoIds.contains(photoId)) {
-                    reviewRepository.savePhoto(new Photo(photoId, review.get(), user.get()));
+                    reviewRepository.savePhoto(new Photo(new PhotoEmbededId(photoId, review.get(), user.get())));
                 }
             }
             reviewRepository.update(modReview, event.getReviewId());

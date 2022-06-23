@@ -5,11 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import mileage.mileage_be.user.domain.User;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
-import javax.persistence.*;
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 @Entity
 @Getter
@@ -17,16 +18,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @ToString
 @Table(indexes = @Index(columnList = "attachedPhotoIDs"))
-public class Photo {
+public class Photo implements Serializable {
 
-    @Id
-    private String attachedPhotoIDs;
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "review")
-    private Review review;
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "user")
-    private User user;
+    @EmbeddedId
+    private PhotoEmbededId photoEmbededId;
+
 }
