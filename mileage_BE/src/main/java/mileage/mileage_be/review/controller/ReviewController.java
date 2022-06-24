@@ -1,5 +1,6 @@
 package mileage.mileage_be.review.controller;
 
+import lombok.RequiredArgsConstructor;
 import mileage.mileage_be.advice.exceptions.NotExistActionException;
 import mileage.mileage_be.advice.exceptions.ReviewAlreadyExistException;
 import mileage.mileage_be.advice.exceptions.ReviewNotExistException;
@@ -14,13 +15,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/events")
+@RequiredArgsConstructor
 public class ReviewController {
 
     private final ReviewService reviewService;
-
-    public ReviewController(ReviewService reviewService) {
-        this.reviewService = reviewService;
-    }
 
     @PostMapping
     public ResponseEntity<String> review(@RequestBody Event event) throws Exception {

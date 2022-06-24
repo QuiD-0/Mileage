@@ -5,6 +5,7 @@ import mileage.mileage_be.user.domain.User;
 import mileage.mileage_be.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,6 +35,11 @@ public class UserServiceImpl implements UserService {
     public User decPoint(String userId) {
         Optional<User> user = findOne(userId);
         return userRepository.pointDown(user.get());
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
 
