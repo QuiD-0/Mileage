@@ -5,6 +5,7 @@ import mileage.mileage_be.user.domain.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -36,5 +37,10 @@ public class JpaUserRepositoryImpl implements UserRepository {
         User UpdatedUser = em.find(User.class, user.getUserId());
         UpdatedUser.setPoint(user.getPoint() - 1);
         return UpdatedUser;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return em.createQuery("select u from User u").getResultList();
     }
 }

@@ -72,8 +72,8 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public void removePhoto(String photoId) {
-        Photo photo = findPhotoByPhotoId(photoId);
+    public void removePhoto(String photoId, String reviewId) {
+        Photo photo = findPhotoByPhotoId(photoId, reviewId);
         em.remove(photo);
     }
 
@@ -89,8 +89,8 @@ public class JpaReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
-    public Photo findPhotoByPhotoId(String photoId) {
-        return (Photo) em.createQuery("select p from Photo p where p.photoEmbededId.attachedPhotoIDs=:photoId").setParameter("photoId", photoId).getSingleResult();
+    public Photo findPhotoByPhotoId(String photoId, String reviewId) {
+        return (Photo) em.createQuery("select p from Photo p where p.photoEmbededId.attachedPhotoIDs=:photoId and p.photoEmbededId.review.reviewId=:reviewId").setParameter("photoId", photoId).setParameter("reviewId", reviewId).getSingleResult();
     }
 
 

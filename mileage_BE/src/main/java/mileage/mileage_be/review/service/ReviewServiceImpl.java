@@ -90,7 +90,7 @@ public class ReviewServiceImpl implements ReviewService {
             //수정후 삭제된 사진 삭제
             for (String photoId : originPhotoIds) {
                 if (!modPhotoIds.contains(photoId)) {
-                    reviewRepository.removePhoto(photoId);
+                    reviewRepository.removePhoto(photoId,review.get().getReviewId());
                 }
             }
             //수정후 추가된 사진 추가

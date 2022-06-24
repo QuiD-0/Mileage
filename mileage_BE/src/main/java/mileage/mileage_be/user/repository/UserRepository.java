@@ -2,6 +2,7 @@ package mileage.mileage_be.user.repository;
 
 import mileage.mileage_be.user.domain.User;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface UserRepository {
@@ -12,4 +13,6 @@ public interface UserRepository {
     User pointUp(User user);
 
     User pointDown(User user);
+
+    List<User> findAll();
 }
