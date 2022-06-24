@@ -8,10 +8,10 @@ import mileage.mileage_be.review.domain.Event;
 import mileage.mileage_be.review.service.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/events")
@@ -55,31 +55,6 @@ public class ReviewController {
             default: {
                 throw new NotExistActionException();
             }
-
         }
-
-    }
-
-    private Map<String, String> result = new HashMap();
-
-    @GetMapping
-    public ResponseEntity<Map<String, String>> noGET() {
-        result.clear();
-        result.put("msg", "GET 대신 POST로 요청 해주세요!");
-        return new ResponseEntity(result, HttpStatus.METHOD_NOT_ALLOWED);
-    }
-
-    @PutMapping
-    public ResponseEntity<String> noPUT() {
-        result.clear();
-        result.put("msg", "PUT 대신 POST로 요청 해주세요!");
-        return new ResponseEntity(result, HttpStatus.METHOD_NOT_ALLOWED);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<String> noDELETE() {
-        result.clear();
-        result.put("msg", "DELETE 대신 POST로 요청 해주세요!");
-        return new ResponseEntity(result, HttpStatus.METHOD_NOT_ALLOWED);
     }
 }
