@@ -28,3 +28,4 @@ public class HistoryServiceImpl implements HistoryService {
         return historyRepository.findAllByUserId(userId);
     }
 }
+
