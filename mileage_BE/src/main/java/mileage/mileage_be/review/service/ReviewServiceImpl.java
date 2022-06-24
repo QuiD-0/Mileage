@@ -2,6 +2,9 @@ package mileage.mileage_be.review.service;
 
 import lombok.RequiredArgsConstructor;
 import mileage.mileage_be.advice.exceptions.*;
+import mileage.mileage_be.history.domain.History;
+import mileage.mileage_be.history.domain.HistoryDelta;
+import mileage.mileage_be.history.service.HistoryService;
 import mileage.mileage_be.review.domain.*;
 import mileage.mileage_be.review.repository.ReviewRepository;
 import mileage.mileage_be.user.domain.User;
@@ -19,7 +22,7 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
     private final UserService userService;
 
-    //히스토리 작성하기
+    private final HistoryService historyService;
 
     @Override
     @Transactional
@@ -42,17 +45,20 @@ public class ReviewServiceImpl implements ReviewService {
         //컨텐츠가 있을경우 포인트 지급
         if (event.getContent().length() > 0) {
             userService.incPoint(user.get().getUserId());
+            historyService.saveHistory(new History(review.getReviewId(),user.get().getUserId(),Action_type.ADD, HistoryDelta.INCREASE,1,"리뷰 작성"));
         } else {
             throw new ContentNotExistException();
         }
         //사진이 있을경우 포인트 지급
         if (event.getAttachedPhotoIds().size() > 0) {
             userService.incPoint(user.get().getUserId());
+            historyService.saveHistory(new History(review.getReviewId(),user.get().getUserId(),Action_type.ADD, HistoryDelta.INCREASE,1,"사진 첨부"));
         }
         //장소별 추가 포인트 지급
         if (reviewRepository.findPlaceByPlaceId(event.getPlaceId()).isEmpty()) {
             reviewRepository.savePlace(new Place(event.getPlaceId(), review, user.get()));
             userService.incPoint(user.get().getUserId());
+            historyService.saveHistory(new History(review.getReviewId(),user.get().getUserId(),Action_type.ADD, HistoryDelta.INCREASE,1,"장소 첫 리뷰 작성"));
         }
 
 
@@ -99,10 +105,12 @@ public class ReviewServiceImpl implements ReviewService {
         //사진이 1개 이상이였다가 모두 지워진 경우
         if (originPhotoIdsLength > 0 && modPhotoIdsLength == 0) {
             userService.decPoint(user.get().getUserId());
+            historyService.saveHistory(new History(modReview.getReviewId(), user.get().getUserId(),Action_type.MOD, HistoryDelta.DECREASE,1,"사진 삭제"));
         }
         //사진이 없던 상태에서 추가된 경우
         else if (originPhotoIdsLength == 0 && modPhotoIdsLength > 0) {
             userService.incPoint(user.get().getUserId());
+            historyService.saveHistory(new History(modReview.getReviewId(), user.get().getUserId(),Action_type.MOD, HistoryDelta.DECREASE,1,"사진 추가"));
         }
         return modReview;
     }
@@ -122,14 +130,17 @@ public class ReviewServiceImpl implements ReviewService {
         if (photoIds.size() > 0) {
             reviewRepository.removeAllPhotoByReviewId(reviewId);
             userService.decPoint(user.get().getUserId());
+            historyService.saveHistory(new History(review.get().getReviewId(), user.get().getUserId(),Action_type.DELETE, HistoryDelta.DECREASE,1,"리뷰 삭제(사진)"));
         }
         //사용자가 해당 지역에 최초 등록한 리뷰였을경우
         if (!place.isEmpty() && place.get().getUser().getUserId().equals(user.get().getUserId()) && place.get().getReview().getReviewId().equals(reviewId)) {
             reviewRepository.deletePlace(place.get());
             userService.decPoint(user.get().getUserId());
+            historyService.saveHistory(new History(review.get().getReviewId(), user.get().getUserId(),Action_type.DELETE, HistoryDelta.DECREASE,1,"장소 첫 리뷰 삭제"));
         }
         reviewRepository.delete(reviewId);
         userService.decPoint(user.get().getUserId());
+        historyService.saveHistory(new History(review.get().getReviewId(), user.get().getUserId(),Action_type.DELETE, HistoryDelta.DECREASE,1,"리뷰 삭제(글)"));
         return true;
     }
 
