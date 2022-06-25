@@ -31,4 +31,10 @@ public class Review {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    public Review(String reviewId, String content, String userId, String placeId) {
+        this.reviewId = reviewId;
+        this.content = content;
+        this.userId = userId;
+        this.placeId = placeId;
+    }
 }
