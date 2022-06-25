@@ -36,7 +36,7 @@ public class ReviewServiceImpl implements ReviewService {
         Long isReviewedPlace = reviewRepository.findAllReviewedPlaceByUserId(user.get().getUserId(),event.getPlaceId());
         if(isReviewedPlace!=0)throw new AlreadyReviewedPlaceException();
         //리뷰 저장
-        Review review = new Review(event.getReviewId(), event.getContent(), event.getUserId(), event.getPlaceId(), null, null);
+        Review review = new Review(event.getReviewId(), event.getContent(), event.getUserId(), event.getPlaceId());
         review = reviewRepository.save(review);
         //사진 저장
         for (String photoID : event.getAttachedPhotoIds()) {
