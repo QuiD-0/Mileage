@@ -172,17 +172,6 @@ public class ReviewServiceTest {
 
     @Test
     @Transactional
-    public void delReviewWhenUserNotExist() throws UserNotFoundException, NotExistActionException, ContentNotExistException, AlreadyReviewedPlaceException {
-        Event event1 = new Event("REVIEW", Action_type.ADD, "review_id1", "test", List.of(), "user_id1", "place_id1");
-        Event event2 = new Event("REVIEW", Action_type.DELETE, "review_id1", "test", List.of(), "user_id2", "place_id1");
-
-        reviewService.addReview(event1);
-        //존재하지 않는 사용자가 삭제
-        Assertions.assertThrows(UserNotFoundException.class, () -> reviewService.deleteReview(event2.getReviewId()));
-    }
-
-    @Test
-    @Transactional
     public void delReview() throws UserNotFoundException, NotExistActionException, ContentNotExistException, AlreadyReviewedPlaceException, ReviewNotExistException {
         Event event1 = new Event("REVIEW", Action_type.ADD, "review_id1", "test", List.of(), "user_id1", "place_id1");
 
