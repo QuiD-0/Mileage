@@ -174,7 +174,7 @@ public class ReviewServiceTest {
     @Transactional
     public void delReviewWhenUserNotExist() throws UserNotFoundException, NotExistActionException, ContentNotExistException, AlreadyReviewedPlaceException {
         Event event1 = new Event("REVIEW", Action_type.ADD, "review_id1", "test", List.of(), "user_id1", "place_id1");
-        Event event2 = new Event("REVIEW", Action_type.DELETE, "review_id2", "test", List.of(), "user_id1", "place_id1");
+        Event event2 = new Event("REVIEW", Action_type.DELETE, "review_id1", "test", List.of(), "user_id2", "place_id1");
 
         reviewService.addReview(event1);
         //존재하지 않는 사용자가 삭제
