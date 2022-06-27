@@ -1,5 +1,5 @@
 # TRIPLE_BE
-트리플 서비스 백엔드 엔지니어 과재전형 리포지토리입니다.   
+이재웅_트리플 서비스 백엔드 엔지니어 과제전형 리포지토리입니다.   
 
 - java 15   
 - spring-boot 2.7.0   
@@ -17,4 +17,4 @@ java -jar TripleMileageBE.jar 을 입력 해 주세요.
 
 
 과제 코드는 mileage_BE\src\main에 위치해 있으며
-테스트 코드는 mileage_BE\srctest에 위치해 있습니다.
+테스트 코드는 mileage_BE\src\test에 위치해 있습니다.
