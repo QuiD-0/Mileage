@@ -27,7 +27,7 @@ DDL\triple_BE.sql 파일을 실행하여 DB를 생성합니다.
 
 mileage_BE 폴더를 프로젝트로 열어 dependency가 다운로드될때까지 기다려 주세요
 jdk를 15버전 이상으로 설정 해 주세요.
-mileage_BE/src/main/java/mileage/mileage_be/MileageBeApplication.java를 실행 해 주세요.
+mileage_BE\src\main\java\mileage\mileage_be\MileageBeApplication.java를 실행 해 주세요.
 
 ## 서비스
 
