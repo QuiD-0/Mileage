@@ -36,9 +36,9 @@ mileage_BE/src/main/java/mileage/mileage_be/MileageBeApplication.java를 실행 
 
 POST /events를 통해 리뷰 추가, 수정, 삭제를 할수 있습니다.   
 GET /history를 통해 모든 포인트 부여, 회수 이력을 볼 수 있습니다.   
-GET /history/{userID}를 통해 해당 사용자의 포인트 부여, 회수 이력을 볼 수 있습니다.
-GET /point를 통해 모든 사용자의 포인트를 확인할 수 있습니다.   
-GET /point/{userID}를 통해 해당 사용자의 현재 포인트를 확인 할 수 있습니다.   
+GET /history/{userID}를 통해 해당 사용자의 포인트 부여, 회수 이력을 볼 수 있습니다.    
+GET /point를 통해 모든 사용자의 포인트를 확인할 수 있습니다.     
+GET /point/{userID}를 통해 해당 사용자의 현재 포인트를 확인 할 수 있습니다.       
 
 테스트 코드는 mileage_BE\src\test에 위치해 있습니다.   
 reviewService에 대한 테스트 코드입니다.
