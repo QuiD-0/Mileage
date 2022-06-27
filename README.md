@@ -16,5 +16,10 @@ cmd창에서 해당 폴더로 이동후
 java -jar TripleMileageBE.jar 을 입력 해 주세요.   
 
 
-과제 코드는 mileage_BE\src\main에 위치해 있으며
-테스트 코드는 mileage_BE\src\test에 위치해 있습니다.
+## 서비스
+
+과제 코드는 mileage_BE\src\main에 위치해 있으며   
+크게 user, review, history 3가지 서비스로 분리하여 작성하였습니다.
+
+테스트 코드는 mileage_BE\src\test에 위치해 있습니다.   
+reviewService에 대한 테스트 코드입니다.
