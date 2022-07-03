@@ -1,5 +1,4 @@
-# TRIPLE_BE
-이재웅_트리플 서비스 백엔드 엔지니어 과제전형 리포지토리입니다.   
+# Mileage
 
 - java 15   
 - spring-boot 2.7.0   
